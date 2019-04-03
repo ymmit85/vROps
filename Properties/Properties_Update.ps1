@@ -31,7 +31,6 @@
 .PARAMETER token
     Authentication token already generated from PowervROps module.
 
-
 .EXAMPLE
     .\vROPs - Bulk Update.ps1 -outputDir c:\temp -inputList 'c:\temp\inputfile.csv -restHost 'vropserver.lab.local' -token $token
     .\vROPs - Bulk Update.ps1 -outputDir c:\temp  -restHost 'vropserver.lab.local' -username admin -authsource local
@@ -56,7 +55,7 @@ $password = 'password1'
 $authsource = 'local'
 #>
 
-if ($username -and (!($password))) {
+if ($username -and (!($password)) -and (!($token))) {
     $password = Read-Host 'Enter Password'
     $token = acquiretoken -resthost $resthost -username $username -password $password -authsource $authsource
 }
@@ -84,7 +83,7 @@ For($i = 0; $i -le $o; $i++) {
     #Loop through all objects
     foreach ($object in $objects) {
         $i++
-            Write-Progress -Activity "Updating Properties for $o object(s)" -Status "Processing Object $($Object.objectName) - ($i/$o)" ` -percentComplete ($i / $o*100)
+        Write-Progress -Activity "Updating Properties for $o object(s)" -Status "Processing Object $($Object.objectName) - ($i/$o)" ` -percentComplete ($i / $o*100)
 
         #Find resouce ID of object to be reported on in vROPs
         $resource = getresources -resthost $resthost -token $token -name $object.objectName -resourceKind $object.objecttype
@@ -103,7 +102,7 @@ For($i = 0; $i -le $o; $i++) {
                 
                 if ($debug) {
                     $body
-                }
+                    }
                 $RES= addProperties -resthost $resthost -token $token -objectid $id -body $body
                 $RES
 
