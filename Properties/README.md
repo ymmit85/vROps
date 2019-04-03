@@ -8,14 +8,14 @@ Script will allow input from CSV file to bulk update objects in vROPs with custo
 
 CSV will require the following fields.
 
-objectName,name,type,value
+    objectName,name,type,value
 
-objectName = Name of object within vROPs
-name = Name of property or metric to add
-type =  Specifies a Property or Metric to add
-        data = Property
-        value = Metric
-value = Value of Property or Metic
+    objectName = Name of object within vROPs
+    name = Name of property or metric to add
+    type =  Specifies a Property or Metric to add
+            data = Property
+            value = Metric
+    value = Value of Property or Metic
 
 ### Script Parameters
 
