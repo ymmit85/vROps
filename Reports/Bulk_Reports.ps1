@@ -4,6 +4,7 @@
     
 .DESCRIPTION
     Will run reports against multiple objects in vROps. Input list can be provided by parameter input or CSV.
+    CSV file requires a single column with VM names of which to run report against.
 
 .NOTES
     Version:    1.0
