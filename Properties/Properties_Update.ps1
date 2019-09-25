@@ -89,9 +89,11 @@ For($i = 0; $i -le $o; $i++) {
         $resource = getresources -resthost $resthost -token $token -name $object.objectName -resourceKind $object.objecttype
         if ($resource.resourceList.identifier -and ($resource.resourceList.identifier).count -eq 1 ){
             $id = $resource.resourceList.identifier
+            $id
             # Create the json payload to add the statistics to the virtual machine
                 $body = @{ 
                     'property-content' = @( @{
+                        'timestamps' = @(getTimeSinceEpoch -date (get-date))
                         'statKey' = $object.Name
                         $object.type = @($object.Value)
                         'others' = @()
@@ -105,7 +107,7 @@ For($i = 0; $i -le $o; $i++) {
                     }
                 $RES= addProperties -resthost $resthost -token $token -objectid $id -body $body
                 $RES
-
+write-host "res $res" -ForegroundColor Green
         # Check if multiple resources in vROPs with same name are found
         } elseif (($resource.resourceList.identifier).count -gt 1){
             write-debug "Multiple entires found for $object"
