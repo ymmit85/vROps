@@ -1,7 +1,12 @@
 param(
     $vROpsHost,
-    [System.Management.Automation.PSCredential]$vROpsCred
+    [System.Management.Automation.PSCredential]$vROpsCred,
+    $debug
 )
+
+if (!($vROpsCred)) {
+    $vROpsCred = get-credential
+}
 
 #region function
         function updatevROPs {
@@ -28,6 +33,10 @@ param(
         } | convertto-json -depth 5
         #$body
         #Send Data to vROps
+        if ($debug) {
+            $body
+        }
+
         $addProp = addProperties -resthost $vROpsHost -credential $vROpsCred -objectid $vROpsId -body $body
     }
 #end region function
@@ -70,7 +79,7 @@ foreach ($license in $hostLicenseData) {
         updatevROPs -statKey "License Data|$($license.LicenseName)" -value $($license.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseName" -value $($license.LicenseName) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseKey" -value $($license.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
-        updatevROPs -statKey "License Data|ExpirationDate" -value $($license.ExpirationDate) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
+        updatevROPs -statKey "LicenseData|ExpirationDate" -value $($license.ExpirationDate.ToString()) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
     }
 }
 
@@ -87,7 +96,7 @@ foreach ($vCenterLicense in $vCenterLicenseData) {
 
         updatevROPs -statKey "LicenseData|LicenseName" -value $($vCenterLicense.LicenseName) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseKey" -value $($vCenterLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
-        updatevROPs -statKey "LicenseData|ExpirationDate" -value $($vCenterLicense.ExpirationDate) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
+        updatevROPs -statKey "LicenseData|ExpirationDate" -value $($vCenterLicense.ExpirationDate.ToString()) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
     }
 
 $vSANLicenseData = $LicenseData | Where-Object {$_.LicenseName -like '*VMware vSAN*'}
@@ -98,8 +107,7 @@ foreach ($vSANLicense in $vSANLicenseData) {
     $clusterName = $vSANLicense.EntityDisplayName
     $id = (getresources -resthost $vROpsHost -credential $vROpsCred -name $clusterName -resourceKind $resourceKind).resourceList
         updatevROPs -statKey "License Data|$($vSANLicense.LicenseName)" -value $($vSANLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
-  
         updatevROPs -statKey "LicenseData|LicenseName" -value $($vSANLicense.LicenseName) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseKey" -value $($vSANLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
-        updatevROPs -statKey "LicenseData|ExpirationDate" -value $($vSANLicense.ExpirationDate) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
+        updatevROPs -statKey "LicenseData|ExpirationDate" -value $($vSANLicense.ExpirationDate.ToString()) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
     }
