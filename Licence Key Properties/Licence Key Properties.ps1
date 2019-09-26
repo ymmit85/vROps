@@ -1,7 +1,6 @@
 param(
     $vROpsHost,
-    [System.Management.Automation.PSCredential]$vROpsCred,
-    $debug
+    [System.Management.Automation.PSCredential]$vROpsCred
 )
 
 if (!($vROpsCred)) {
@@ -33,9 +32,6 @@ if (!($vROpsCred)) {
         } | convertto-json -depth 5
         #$body
         #Send Data to vROps
-        if ($debug) {
-            $body
-        }
 
         $addProp = addProperties -resthost $vROpsHost -credential $vROpsCred -objectid $vROpsId -body $body
     }
