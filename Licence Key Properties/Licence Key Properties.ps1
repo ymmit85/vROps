@@ -63,26 +63,16 @@ $licMgr = Get-View LicenseManager -Server $vc
 
 #
 $hostLicenseData = $LicenseData | Where-Object {$_.LicenseName -like '*VMware vSphere 6 Enterprise Plus*'}
-$o = $hostLicenseData.count 
-
-#Create Progress bar in PowerShell window
-For($i = 0; $i -le $o; $i++) {
 
 #Process all hosts
 foreach ($license in $hostLicenseData) {
-    $i++
-    Write-Progress -Activity "$($license.EntityDisplayName) ($i/$o)" -percentComplete (($i / $o)*100)
     #get vrops resource ID
     $resourceKind = 'HostSystem'
-
     $id = getResourcesWithAdapterAndResourceKind -credential $vROpsCred -resthost $vROpsHost -adapterKindKey $adapterKind -resourceKind $resourceKind -identifiers "[VMEntityName]=$($license.EntityDisplayName)"
-        updatevROPs -statKey "License Data|$($license.LicenseName)" -value $($license.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseName" -value $($license.LicenseName) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseKey" -value $($license.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|ExpirationDate" -value $($license.ExpirationDate.ToString()) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
-    }
 }
-
 
 $vCenterLicenseData = $LicenseData | Where-Object {$_.LicenseName -like '*vCenter*'}
 
@@ -92,8 +82,6 @@ foreach ($vCenterLicense in $vCenterLicenseData) {
     $vcName = $vCenterLicense.EntityDisplayName
     $vcName = $vcName.Substring(0, $vcName.IndexOf('.'))
     $id = (getresources -resthost $vROpsHost -credential $vROpsCred -name $vcName -resourceKind $resourceKind).resourceList  
-        updatevROPs -statKey "License Data|$($vCenterLicense.LicenseName)" -value $($vCenterLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
-
         updatevROPs -statKey "LicenseData|LicenseName" -value $($vCenterLicense.LicenseName) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseKey" -value $($vCenterLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|ExpirationDate" -value $($vCenterLicense.ExpirationDate.ToString()) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
@@ -106,7 +94,6 @@ foreach ($vSANLicense in $vSANLicenseData) {
     $resourceKind = 'ClusterComputeResource'
     $clusterName = $vSANLicense.EntityDisplayName
     $id = (getresources -resthost $vROpsHost -credential $vROpsCred -name $clusterName -resourceKind $resourceKind).resourceList
-        updatevROPs -statKey "License Data|$($vSANLicense.LicenseName)" -value $($vSANLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseName" -value $($vSANLicense.LicenseName) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|LicenseKey" -value $($vSANLicense.LicenseKey) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
         updatevROPs -statKey "LicenseData|ExpirationDate" -value $($vSANLicense.ExpirationDate.ToString()) -vROpsId $id.identifier -vROpsHost $vROpsHost -vROpsCred $vROpsCred
