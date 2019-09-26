@@ -13,9 +13,9 @@ CSV will require the following fields.
     objectName = Name of object within vROPs
     name = Name of property or metric to add
     type =  Specifies a Property or Metric to add
-            data = Property
-            value = Metric
-    value = Value of Property or Metic
+            data = Metric (number)
+            values = Metric (string)
+    value = Value of Property or Metric
 
 ### Script Parameters
 

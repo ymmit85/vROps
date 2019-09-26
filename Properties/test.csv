@@ -1,3 +1,9 @@
-objectName,name,type,value
-vm1,test|test,data,test
-vm1,test|test,value,8888
+objectName,objectType,name,type,value
+vcsa65,VirtualMachine,test|script,values,cake
+vcsa65,VirtualMachine,test|script,data,18.0
+vcsa65,VirtualMachine,Script|script,values,tree
+vcsa65,VirtualMachine,Script|script,data,456.0
+minilab,ClusterComputeResource,Test|Location,values,perth
+minilab,ClusterComputeResource,Test|Location,data,4564.0
+vcsa65,VirtualMachine,Test|Location,values,perth
+vcsa65,VirtualMachine,Test|Location,data,4564.0
