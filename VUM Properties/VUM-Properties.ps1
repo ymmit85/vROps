@@ -1,3 +1,5 @@
+#Requires -Module PowervROps
+
 param(
     $vROpsHost,
     [System.Management.Automation.PSCredential]$vROpsCred,

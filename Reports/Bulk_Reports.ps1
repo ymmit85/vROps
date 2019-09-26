@@ -1,3 +1,5 @@
+#Requires -Module PowervROps
+
 <#
 .SYNOPSIS  
     Run reports against multiple objects within vROps.

@@ -1,3 +1,5 @@
+#Requires -Module PowervROps
+
 <#
 .SYNOPSIS  
     Add custom properties/metrics to objects in vROPs
