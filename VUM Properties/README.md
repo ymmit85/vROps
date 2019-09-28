@@ -2,6 +2,8 @@
 
 Script will collect VUM Baseline attached to each host in a vSphere cluster and assign Baseline name and compliance state to the associated object in vROps.
 
+### Requires existing connection to vCenter server
+
 ### Script Parameters
 
     $vROpsHost = vROPs Hostname
